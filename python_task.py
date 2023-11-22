@@ -4,13 +4,18 @@ import sqlite3
 
 
 def check_token(token):
+    tries = 1
     while True:
+        if tries == 5:
+            print('Превышено количество попыток ввода ключа, завершение программы')
+            exit()
         try:
             dadata = Dadata(token)
             dadata.suggest("address", "check")
             break
         except (httpx.HTTPStatusError, UnicodeError):
             token = input('Неправильный ключ, повторите ввод\n')
+            tries += 1
     return token, dadata
 
 
